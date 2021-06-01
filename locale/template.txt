@@ -1,0 +1,5 @@
+# textdomain: mesecons_onlinedetector
+
+Online Detector=
+Detecting:=
+Allows you to know if a player is connected.=
