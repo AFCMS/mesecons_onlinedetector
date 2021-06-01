@@ -84,6 +84,8 @@ local on_def = table.copy(nodedef)
 
 on_def.tiles = {"mesecons_onlinedetector_online_detector_on.png"}
 
+on_def.drop = "mesecons_onlinedetector:online_detector_off"
+
 on_def.mesecons = {
 	receptor = {
 		state = mesecon.state.on,
