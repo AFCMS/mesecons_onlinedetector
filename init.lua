@@ -70,11 +70,12 @@ function off_def.on_receive_fields(pos, formname, fields, sender)
 	end
 end
 
+--WARNING: the mesecon_onlinedetector group should NEVER assigned to another node, or you should expect the game to crash 
 if has_mcl_core then
-	--off_def.groups = {cracky = 2, mesecon_detector_off = 1, mesecon = 2}
-	off_def.groups = {handy = 1, mesecon_detector_off = 1, mesecon = 2}
+	--off_def.groups = {cracky = 2, mesecon_onlinedetector = 1, mesecon_detector_off = 1, mesecon = 2}
+	off_def.groups = {handy = 1, mesecon_onlinedetector = 1, mesecon_detector_off = 1, mesecon = 2}
 else
-	off_def.groups = {cracky = 2, mesecon_detector_off = 1, mesecon = 2}
+	off_def.groups = {cracky = 2, mesecon_onlinedetector = 1, mesecon_detector_off = 1, mesecon = 2}
 end
 
 minetest.register_node("mesecons_onlinedetector:online_detector_off", off_def)
@@ -128,6 +129,20 @@ minetest.register_abm({
 	chance = 1,
 	action = function(pos)
 		update_detector_on(pos, minetest.get_meta(pos):get_string("name"))
+	end,
+})
+
+minetest.register_lbm({
+	label = "Update onlinedetector state",
+	name = "mesecons_onlinedetector:online_detector",
+	nodenames = {"group:mesecon_onlinedetector"},
+	run_at_every_load = true,
+	action = function(pos, node)
+		if node.name == "mesecons_onlinedetector:online_detector_off" then
+			update_detector_off(pos, minetest.get_meta(pos):get_string("name"))
+		else
+			update_detector_on(pos, minetest.get_meta(pos):get_string("name"))
+		end
 	end,
 })
 
