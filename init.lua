@@ -105,9 +105,9 @@ end
 
 if has_mcl_core then
 	--on_def.groups = {cracky = 2, mesecon_detector_off = 1, mesecon = 2}
-	on_def.groups = {handy = 1, mesecon_detector_on = 1, mesecon = 2}
+	on_def.groups = {handy = 1, mesecon_detector_on = 1, mesecon = 2, not_in_creative_inventory = 1}
 else
-	on_def.groups = {cracky = 2, mesecon_detector_on = 1, mesecon = 2}
+	on_def.groups = {cracky = 2, mesecon_detector_on = 1, mesecon = 2, not_in_creative_inventory = 1}
 end
 
 minetest.register_node("mesecons_onlinedetector:online_detector_on", on_def)
