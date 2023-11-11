@@ -11,8 +11,8 @@ local function get_detector_form(default)
 	return table.concat({
 		"formspec_version[4]",
 		"size[8,3]",
-		"field[0.25,0.75;7.5,0.75;name;"..F(S("Online Detector"))..";"..default.."]",
-		"label[0.25,2.25;"..F(S("Detecting:")).." "..default.."]"
+		"field[0.25,0.75;7.5,0.75;name;"..F(S("Online Detector"))..";"..F(default).."]",
+		"label[0.25,2.25;"..F(S("Detecting:")).." "..F(default).."]"
 	})
 end
 
