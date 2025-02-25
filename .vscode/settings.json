@@ -1,0 +1,13 @@
+{
+    "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
+    "[lua]": {
+        "editor.quickSuggestions": {
+            "comments": "inline",
+            "other": "on",
+            "strings": "on"
+        },
+        "editor.semanticHighlighting.enabled": true,
+        "editor.defaultFormatter": "sumneko.lua"
+    }
+}
