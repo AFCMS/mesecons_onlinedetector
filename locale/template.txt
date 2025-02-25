@@ -1,5 +1,5 @@
 # textdomain: mesecons_onlinedetector
 
 Online Detector=
-Detecting:=
-Allows you to know if a player is connected.=
+Detecting (comma separated):=
+Allows you to know if any player is connected in a given list.=
