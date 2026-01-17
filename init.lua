@@ -67,28 +67,33 @@ local nodedef = {
 		local meta = core.get_meta(pos)
 		meta:set_string("formspec", get_detector_form(meta:get_string("name")))
 	end,
+	on_receive_fields = function(pos, formname, fields, sender)
+		if core.is_protected(pos, sender:get_player_name()) then
+			return
+		end
+		if fields.name then
+			local node = core.get_node(pos)
+			local meta = core.get_meta(pos)
+			meta:set_string("name", fields.name)
+			meta:set_string("formspec", get_detector_form(fields.name))
+			if node.name == "mesecons_onlinedetector:online_detector_off" then
+				update_detector_off(pos, core.get_meta(pos):get_string("name"))
+			else
+				update_detector_on(pos, core.get_meta(pos):get_string("name"))
+			end
+		end
+	end,
 }
 
-
-local off_def = table.copy(nodedef)
-
-off_def.tiles = { "mesecons_onlinedetector_online_detector_off.png" }
-
-off_def.mesecons = {
-	receptor = {
-		state = mesecon.state.off,
-		rules = mesecon.rules.alldirs,
+local off_def = {
+	tiles = { "mesecons_onlinedetector_online_detector_off.png" },
+	mesecons = {
+		receptor = {
+			state = mesecon.state.off,
+			rules = mesecon.rules.alldirs,
+		},
 	},
 }
-
-function off_def.on_receive_fields(pos, formname, fields, sender)
-	if fields.name then
-		local meta = core.get_meta(pos)
-		meta:set_string("name", fields.name)
-		meta:set_string("formspec", get_detector_form(fields.name))
-		update_detector_off(pos, fields.name)
-	end
-end
 
 --WARNING: the mesecon_onlinedetector group should NEVER assigned to another node, or you should expect the game to crash
 if has_mcl_core then
@@ -98,42 +103,25 @@ else
 	off_def.groups = { cracky = 2, mesecon_onlinedetector = 1, mesecon_detector_off = 1, mesecon = 2 }
 end
 
-core.register_node("mesecons_onlinedetector:online_detector_off", off_def)
 
-
-local on_def = table.copy(nodedef)
-
-on_def.tiles = { "mesecons_onlinedetector_online_detector_on.png" }
-
-on_def.drop = "mesecons_onlinedetector:online_detector_off"
-
-on_def.mesecons = {
-	receptor = {
-		state = mesecon.state.on,
-		rules = mesecon.rules.alldirs,
+local on_def = {
+	tiles = { "mesecons_onlinedetector_online_detector_on.png" },
+	mesecons = {
+		receptor = {
+			state = mesecon.state.on,
+			rules = mesecon.rules.alldirs,
+		},
 	},
 }
 
-function on_def.on_receive_fields(pos, formname, fields, sender)
-	if core.is_protected(pos, sender:get_player_name()) then
-		return
-	end
-	if fields.name then
-		local meta = core.get_meta(pos)
-		meta:set_string("name", fields.name)
-		meta:set_string("formspec", get_detector_form(fields.name))
-		update_detector_on(pos, fields.name)
-	end
-end
-
 if has_mcl_core then
 	--on_def.groups = {cracky = 2, mesecon_detector_off = 1, mesecon = 2}
-	on_def.groups = { handy = 1, mesecon_detector_on = 1, mesecon = 2, not_in_creative_inventory = 1 }
+	on_def.groups = { handy = 1, mesecon_onlinedetector = 1, mesecon_detector_on = 1, mesecon = 2, not_in_creative_inventory = 1 }
 else
-	on_def.groups = { cracky = 2, mesecon_detector_on = 1, mesecon = 2, not_in_creative_inventory = 1 }
+	on_def.groups = { cracky = 2, mesecon_onlinedetector = 1, mesecon_detector_on = 1, mesecon = 2, not_in_creative_inventory = 1 }
 end
 
-core.register_node("mesecons_onlinedetector:online_detector_on", on_def)
+mesecon.register_node("mesecons_onlinedetector:online_detector", nodedef, off_def, on_def)
 
 core.register_abm({
 	label = "mesecons_onlinedetector:online_detector_off",
